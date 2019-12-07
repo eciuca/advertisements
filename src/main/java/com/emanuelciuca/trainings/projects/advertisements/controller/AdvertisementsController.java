@@ -1,6 +1,7 @@
 package com.emanuelciuca.trainings.projects.advertisements.controller;
 
 import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementDto;
+import com.emanuelciuca.trainings.projects.advertisements.exception.NotFoundException;
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
 import com.emanuelciuca.trainings.projects.advertisements.service.AdvertisementsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class AdvertisementsController {
 
     @GetMapping("/{id}")
     public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable Long id) {
-        Advertisement advertisement = advertisementService.getAdvertisementById(id);
+        Advertisement advertisement = advertisementService.getAdvertisementById(id)
+                .orElseThrow(NotFoundException::new);
 
         AdvertisementDto response =
                 AdvertisementDto.advertisementDto()

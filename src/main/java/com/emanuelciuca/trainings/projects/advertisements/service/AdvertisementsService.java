@@ -1,15 +1,23 @@
 package com.emanuelciuca.trainings.projects.advertisements.service;
 
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
+import com.emanuelciuca.trainings.projects.advertisements.repository.AdvertisementsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AdvertisementsService {
 
-    public Advertisement getAdvertisementById(Long id) {
-        Advertisement advertisement = new Advertisement();
-        advertisement.setId(id);
+    private final AdvertisementsRepository advertisementsRepository;
 
-        return advertisement;
+    @Autowired
+    public AdvertisementsService(AdvertisementsRepository advertisementsRepository) {
+        this.advertisementsRepository = advertisementsRepository;
+    }
+
+    public Optional<Advertisement> getAdvertisementById(Long id) {
+        return advertisementsRepository.findById(id);
     }
 }
