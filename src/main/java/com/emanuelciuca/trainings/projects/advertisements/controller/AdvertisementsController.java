@@ -34,7 +34,8 @@ public class AdvertisementsController {
 
         AdvertisementDto response =
                 AdvertisementDto.advertisementDto()
-                        .withId(advertisement.getId());
+                        .withId(advertisement.getId())
+                        .withTitle(advertisement.getTitle());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

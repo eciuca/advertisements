@@ -1,9 +1,8 @@
 package com.emanuelciuca.trainings.projects.advertisements.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.lang.NonNull;
+
+import javax.persistence.*;
 
 import java.util.Objects;
 
@@ -19,6 +18,10 @@ public class Advertisement {
     @GeneratedValue
     private Long id;
 
+    @Column
+    @NonNull
+    private String title;
+
     public Long getId() {
         return id;
     }
@@ -28,16 +31,26 @@ public class Advertisement {
         return this;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public Advertisement setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Advertisement that = (Advertisement) o;
-        return id.equals(that.id);
+        return id.equals(that.id) &&
+                title.equals(that.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title);
     }
 }

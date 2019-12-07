@@ -5,12 +5,13 @@ import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementDto;
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
 import com.emanuelciuca.trainings.projects.advertisements.repository.AdvertisementsRepository;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class AdvertisementsControllerRestIntegrationTest extends RestIntegrationTest {
@@ -28,24 +29,27 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
 
     @Test
     public void givenExistingId_whenGetAdvertisementById_thenReturnAdvertisement() {
-        Advertisement expectedAdvertisement = repository.saveAndFlush(new Advertisement());
+        Advertisement expectedAdvertisement = new Advertisement();
+        expectedAdvertisement.setTitle("title 123");
+        expectedAdvertisement = repository.saveAndFlush(expectedAdvertisement);
 
         AdvertisementDto expectedResult = AdvertisementDto
                 .advertisementDto()
-                .withId(expectedAdvertisement.getId());
+                .withId(expectedAdvertisement.getId())
+                .withTitle(expectedAdvertisement.getTitle());
 
         String relativePath = AdvertisementsController.API_ADVERTISEMENTS + "/" + expectedAdvertisement.getId();
         ResponseEntity<AdvertisementDto> response = this.restTemplate
                 .getForEntity(url(relativePath), AdvertisementDto.class);
 
 
-        Assertions.assertEquals(expectedResult, response.getBody());
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResult, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
     @Test()
     public void givenNonExistingId_whenGetAdvertisementById_thenStatusCodeIsInternalServerError() {
-        Long nonExistingId = 1L;
+        long nonExistingId = 1L;
 
         String relativePath = AdvertisementsController.API_ADVERTISEMENTS + "/" + nonExistingId;
 
@@ -53,6 +57,6 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
                 .getForEntity(url(relativePath), AdvertisementDto.class)
                 .getStatusCode();
 
-        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, statusCode);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, statusCode);
     }
 }

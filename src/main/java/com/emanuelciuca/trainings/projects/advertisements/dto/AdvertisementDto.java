@@ -5,6 +5,7 @@ import java.util.Objects;
 public class AdvertisementDto {
 
     public Long id;
+    public String title;
 
     private AdvertisementDto() { }
 
@@ -17,17 +18,22 @@ public class AdvertisementDto {
         return this;
     }
 
+    public AdvertisementDto withTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AdvertisementDto that = (AdvertisementDto) o;
-        return id.equals(that.id);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(id, title);
     }
-
 }
