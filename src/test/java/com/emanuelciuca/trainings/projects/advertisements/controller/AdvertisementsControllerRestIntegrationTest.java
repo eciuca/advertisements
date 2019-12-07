@@ -5,11 +5,13 @@ import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementDto;
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
 import com.emanuelciuca.trainings.projects.advertisements.repository.AdvertisementsRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdvertisementsControllerRestIntegrationTest extends RestIntegrationTest {
 
@@ -33,10 +35,24 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
                 .withId(expectedAdvertisement.getId());
 
         String relativePath = AdvertisementsController.API_ADVERTISEMENTS + "/" + expectedAdvertisement.getId();
-        AdvertisementDto actual = this.restTemplate
-                .getForEntity(url(relativePath), AdvertisementDto.class)
-                .getBody();
+        ResponseEntity<AdvertisementDto> response = this.restTemplate
+                .getForEntity(url(relativePath), AdvertisementDto.class);
 
-        assertThat(actual).isEqualTo(expectedResult);
+
+        Assertions.assertEquals(expectedResult, response.getBody());
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test()
+    public void givenNonExistingId_whenGetAdvertisementById_thenStatusCodeIsInternalServerError() {
+        Long nonExistingId = 1L;
+
+        String relativePath = AdvertisementsController.API_ADVERTISEMENTS + "/" + nonExistingId;
+
+        HttpStatus statusCode = this.restTemplate
+                .getForEntity(url(relativePath), AdvertisementDto.class)
+                .getStatusCode();
+
+        Assertions.assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, statusCode);
     }
 }
