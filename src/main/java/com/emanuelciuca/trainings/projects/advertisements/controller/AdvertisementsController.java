@@ -1,5 +1,6 @@
 package com.emanuelciuca.trainings.projects.advertisements.controller;
 
+import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementDto;
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
 import com.emanuelciuca.trainings.projects.advertisements.service.AdvertisementsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +27,12 @@ public class AdvertisementsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<String> getAdvertisementById(@PathVariable Long id) {
+    public ResponseEntity<AdvertisementDto> getAdvertisementById(@PathVariable Long id) {
         Advertisement advertisement = advertisementService.getAdvertisementById(id);
 
-        String response = "advertisement: " + advertisement.getId();
+        AdvertisementDto response =
+                AdvertisementDto.advertisementDto()
+                        .withId(advertisement.getId());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

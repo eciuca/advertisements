@@ -1,6 +1,7 @@
 package com.emanuelciuca.trainings.projects.advertisements.controller;
 
 import com.emanuelciuca.trainings.projects.advertisements.RestIntegrationTest;
+import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -16,10 +17,10 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
     @Test
     public void givenId_whenGetAdvertisementById_thenReturnAdvertisement() throws Exception {
         long id = 1;
-        String expectedResult = "advertisement: " + id;
+        AdvertisementDto expectedResult = AdvertisementDto.advertisementDto().withId(id);
 
-        String actual = this.restTemplate
-                .getForEntity(url(AdvertisementsController.API_ADVERTISEMENTS + "/" + id), String.class)
+        AdvertisementDto actual = this.restTemplate
+                .getForEntity(url(AdvertisementsController.API_ADVERTISEMENTS + "/" + id), AdvertisementDto.class)
                 .getBody();
 
         assertThat(actual).isEqualTo(expectedResult);
