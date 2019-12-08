@@ -1,9 +1,7 @@
 package com.emanuelciuca.trainings.projects.advertisements.model;
 
-import org.springframework.lang.NonNull;
-
 import javax.persistence.*;
-
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 import static com.emanuelciuca.trainings.projects.advertisements.model.Advertisement.ADVERTISEMENTS_TABLE;
@@ -19,7 +17,7 @@ public class Advertisement {
     private Long id;
 
     @Column
-    @NonNull
+    @NotNull
     private String title;
 
     public Long getId() {
