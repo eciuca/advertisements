@@ -79,6 +79,6 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
         Optional<Advertisement> newAdvertisement = this.repository.findById(newAdvertisementDto.id);
 
         Assertions.assertTrue(newAdvertisement.isPresent());
-        Assertions.assertEquals(details, newAdvertisementDto);
+        Assertions.assertEquals(details.withId(newAdvertisementDto.id), newAdvertisementDto);
     }
 }

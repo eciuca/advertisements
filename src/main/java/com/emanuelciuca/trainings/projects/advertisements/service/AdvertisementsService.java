@@ -20,4 +20,8 @@ public class AdvertisementsService {
     public Optional<Advertisement> getAdvertisementById(Long id) {
         return advertisementsRepository.findById(id);
     }
+
+    public Advertisement createAdvertisement(Advertisement advertisement) {
+        return advertisementsRepository.save(advertisement);
+    }
 }

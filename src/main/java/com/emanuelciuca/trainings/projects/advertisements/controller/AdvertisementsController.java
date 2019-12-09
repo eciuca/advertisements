@@ -7,10 +7,7 @@ import com.emanuelciuca.trainings.projects.advertisements.service.Advertisements
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.emanuelciuca.trainings.projects.advertisements.controller.AdvertisementsController.API_ADVERTISEMENTS;
 
@@ -36,6 +33,20 @@ public class AdvertisementsController {
                 AdvertisementDto.advertisementDto()
                         .withId(advertisement.getId())
                         .withTitle(advertisement.getTitle());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<AdvertisementDto> createAdvertisement(@RequestBody AdvertisementDto details) {
+        Advertisement advertisement = new Advertisement();
+        advertisement.setTitle(details.title);
+
+        advertisement = advertisementService.createAdvertisement(advertisement);
+
+        AdvertisementDto response = AdvertisementDto.advertisementDto()
+                .withId(advertisement.getId())
+                .withTitle(advertisement.getTitle());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
