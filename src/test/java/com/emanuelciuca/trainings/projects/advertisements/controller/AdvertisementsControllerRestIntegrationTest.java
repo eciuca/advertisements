@@ -81,4 +81,23 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
         Assertions.assertTrue(newAdvertisement.isPresent());
         Assertions.assertEquals(details.withId(newAdvertisementDto.id), newAdvertisementDto);
     }
+
+    @Test
+    public void givenNewAdvertisementDetails_WhenPostRequestIsReceived_ThenUpdateAdvertisement() {
+        Advertisement existingAdvertisement = new Advertisement();
+        existingAdvertisement.setTitle("title 123");
+        existingAdvertisement = repository.save(existingAdvertisement);
+
+        AdvertisementDto newAdvertisementDetails = AdvertisementDto.advertisementDto()
+                .withId(existingAdvertisement.getId())
+                .withTitle("title 124");
+
+        String relativePath = API_ADVERTISEMENTS + "/" + newAdvertisementDetails.id;
+        this.restTemplate.put(relativePath, newAdvertisementDetails);
+
+        Optional<Advertisement> updatedAdvertisement = this.repository.findById(newAdvertisementDetails.id);
+
+        Assertions.assertTrue(updatedAdvertisement.isPresent());
+        Assertions.assertEquals(newAdvertisementDetails.title, updatedAdvertisement.get().getTitle());
+    }
 }
