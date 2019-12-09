@@ -50,4 +50,14 @@ public class AdvertisementsController {
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateAdvertisement(@PathVariable Long id, @RequestBody AdvertisementDto newDetails) {
+        Advertisement advertisement = new Advertisement();
+        advertisement.setTitle(newDetails.title);
+
+        advertisementService.updateAdvertisement(id, advertisement);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

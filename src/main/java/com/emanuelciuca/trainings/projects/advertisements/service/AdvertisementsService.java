@@ -24,4 +24,13 @@ public class AdvertisementsService {
     public Advertisement createAdvertisement(Advertisement advertisement) {
         return advertisementsRepository.save(advertisement);
     }
+
+    public Advertisement updateAdvertisement(Long id, Advertisement advertisement) {
+        Advertisement advertisementToUpdate = advertisementsRepository
+                .findById(id)
+                .orElseThrow(RuntimeException::new);
+
+        advertisement.setId(id);
+        return advertisementsRepository.save(advertisement);
+    }
 }
