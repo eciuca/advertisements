@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 import static com.emanuelciuca.trainings.projects.advertisements.controller.AdvertisementsController.API_ADVERTISEMENTS;
 
 @RestController
@@ -57,6 +59,13 @@ public class AdvertisementsController {
         advertisement.setTitle(newDetails.title);
 
         advertisementService.updateAdvertisement(id, advertisement);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAdvertisement(@PathVariable Long id) {
+        advertisementService.deleteAdvertisement(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

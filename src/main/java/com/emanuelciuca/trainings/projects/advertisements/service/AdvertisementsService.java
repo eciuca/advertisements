@@ -33,4 +33,10 @@ public class AdvertisementsService {
         advertisement.setId(id);
         return advertisementsRepository.save(advertisement);
     }
+
+    public void deleteAdvertisement(Long id) {
+        Advertisement existingAdvertisement = advertisementsRepository.findById(id).get();
+
+        advertisementsRepository.delete(existingAdvertisement);
+    }
 }

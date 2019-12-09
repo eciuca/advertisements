@@ -122,7 +122,7 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
 
         // WHEN
         String relativePath = API_ADVERTISEMENTS + "/" + existingAdvertisement.getId();
-        this.restTemplate.put(relativePath, existingAdvertisement.getId());
+        this.restTemplate.delete(relativePath, existingAdvertisement.getId());
 
         // THEN
         Optional<Advertisement> updatedAdvertisement = this.repository.findById(existingAdvertisement.getId());
