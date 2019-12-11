@@ -3,6 +3,7 @@ package com.emanuelciuca.trainings.projects.advertisements.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.emanuelciuca.trainings.projects.advertisements.model.Advertisement.ADVERTISEMENTS_TABLE;
 
@@ -19,6 +20,13 @@ public class Advertisement {
     @Column
     @NotNull
     private String title;
+
+    @ManyToMany
+    @JoinTable(
+            name = "ADVERTISEMENTS_ADVERTISEMENT_CHANNELS",
+            joinColumns = @JoinColumn(name = "advertisement_id"),
+            inverseJoinColumns = @JoinColumn(name = "advertisement_channel_id"))
+    private Set<AdvertisementChannel> channels;
 
     public Long getId() {
         return id;
