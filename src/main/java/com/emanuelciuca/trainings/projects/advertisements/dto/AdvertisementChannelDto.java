@@ -11,7 +11,7 @@ public class AdvertisementChannelDto {
     private AdvertisementChannelDto() {
     }
 
-    public static AdvertisementChannelDto advertisementChannel() {
+    public static AdvertisementChannelDto advertisementChannelDto() {
         return new AdvertisementChannelDto();
     };
 
