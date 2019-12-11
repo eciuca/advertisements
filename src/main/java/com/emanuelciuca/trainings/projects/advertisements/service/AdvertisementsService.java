@@ -28,7 +28,7 @@ public class AdvertisementsService {
     }
 
     public Advertisement updateAdvertisement(Long id, Advertisement advertisement) {
-        Advertisement advertisementToUpdate = advertisementsRepository
+        advertisementsRepository
                 .findById(id)
                 .orElseThrow(RuntimeException::new);
 
@@ -37,7 +37,9 @@ public class AdvertisementsService {
     }
 
     public void deleteAdvertisement(Long id) {
-        Advertisement existingAdvertisement = advertisementsRepository.findById(id).get();
+        Advertisement existingAdvertisement = advertisementsRepository
+                .findById(id)
+                .orElseThrow(RuntimeException::new);
 
         advertisementsRepository.delete(existingAdvertisement);
     }
