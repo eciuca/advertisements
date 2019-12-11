@@ -1,13 +1,16 @@
 package com.emanuelciuca.trainings.projects.advertisements.dto;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class AdvertisementDto {
 
     public Long id;
     public String title;
+    public Set<AdvertisementChannelDto> channels;
 
-    private AdvertisementDto() { }
+    private AdvertisementDto() {
+    }
 
     public static AdvertisementDto advertisementDto() {
         return new AdvertisementDto();
@@ -20,6 +23,11 @@ public class AdvertisementDto {
 
     public AdvertisementDto withTitle(String title) {
         this.title = title;
+        return this;
+    }
+
+    public AdvertisementDto withChannels(Set<AdvertisementChannelDto> channels) {
+        this.channels = channels;
         return this;
     }
 

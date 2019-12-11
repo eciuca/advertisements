@@ -2,13 +2,20 @@ package com.emanuelciuca.trainings.projects.advertisements.dto;
 
 import com.emanuelciuca.trainings.projects.advertisements.UnitTest;
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AdvertisementMapperTest extends UnitTest {
 
-    private final AdvertisementMapper mapper = new AdvertisementMapper();
+    private AdvertisementMapper mapper;
+
+    @BeforeEach
+    public void before() {
+        AdvertisementChannelMapper advertisementChannelMapper = new AdvertisementChannelMapper();
+        mapper = new AdvertisementMapper(advertisementChannelMapper);
+    }
 
     @Test
     void givenAdvertisementDto_whenToEntity_ThenAdvertisementIsCreatedCorrectly() {

@@ -46,6 +46,15 @@ public class Advertisement {
         return this;
     }
 
+    public Set<AdvertisementChannel> getChannels() {
+        return channels;
+    }
+
+    public Advertisement setChannels(Set<AdvertisementChannel> channels) {
+        this.channels = channels;
+        return this;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
