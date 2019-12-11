@@ -31,32 +31,25 @@ public class AdvertisementsController {
         Advertisement advertisement = advertisementService.getAdvertisementById(id)
                 .orElseThrow(NotFoundException::new);
 
-        AdvertisementDto response =
-                AdvertisementDto.advertisementDto()
-                        .withId(advertisement.getId())
-                        .withTitle(advertisement.getTitle());
+        AdvertisementDto response = toDto(advertisement);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<AdvertisementDto> createAdvertisement(@RequestBody AdvertisementDto details) {
-        Advertisement advertisement = new Advertisement();
-        advertisement.setTitle(details.title);
+        Advertisement advertisement = toEntity(details);
 
         advertisement = advertisementService.createAdvertisement(advertisement);
 
-        AdvertisementDto response = AdvertisementDto.advertisementDto()
-                .withId(advertisement.getId())
-                .withTitle(advertisement.getTitle());
+        AdvertisementDto response = toDto(advertisement);
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity updateAdvertisement(@PathVariable Long id, @RequestBody AdvertisementDto newDetails) {
-        Advertisement advertisement = new Advertisement();
-        advertisement.setTitle(newDetails.title);
+        Advertisement advertisement = toEntity(newDetails);
 
         advertisementService.updateAdvertisement(id, advertisement);
 
@@ -68,5 +61,19 @@ public class AdvertisementsController {
         advertisementService.deleteAdvertisement(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private Advertisement toEntity(AdvertisementDto advertisementDto) {
+        Advertisement advertisement = new Advertisement();
+        advertisement.setId(advertisementDto.id);
+        advertisement.setTitle(advertisementDto.title);
+
+        return advertisement;
+    }
+
+    private AdvertisementDto toDto(Advertisement advertisement) {
+        return AdvertisementDto.advertisementDto()
+                .withId(advertisement.getId())
+                .withTitle(advertisement.getTitle());
     }
 }
