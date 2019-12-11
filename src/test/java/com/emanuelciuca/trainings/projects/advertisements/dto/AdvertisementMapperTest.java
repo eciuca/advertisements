@@ -27,4 +27,22 @@ class AdvertisementMapperTest extends UnitTest {
         assertThat(actual.getTitle()).isEqualTo(expectedTitle);
     }
 
+    @Test
+    void givenAdvertisement_whenToDto_ThenAdvertisementDtoIsCreatedCorrectly() {
+        // GIVEN
+        long expectedId = 123L;
+        String expectedTitle = "title";
+
+        Advertisement expected = new Advertisement();
+        expected.setId(expectedId);
+        expected.setTitle(expectedTitle);
+
+        // WHEN
+        AdvertisementDto actual = mapper.toDto(expected);
+
+        // THEN
+        assertThat(actual.id).isEqualTo(expectedId);
+        assertThat(actual.title).isEqualTo(expectedTitle);
+    }
+
 }
