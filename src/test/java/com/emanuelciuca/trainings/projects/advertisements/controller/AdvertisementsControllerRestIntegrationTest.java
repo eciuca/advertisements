@@ -2,6 +2,7 @@ package com.emanuelciuca.trainings.projects.advertisements.controller;
 
 import com.emanuelciuca.trainings.projects.advertisements.RestIntegrationTest;
 import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementDto;
+import com.emanuelciuca.trainings.projects.advertisements.dto.AdvertisementMapper;
 import com.emanuelciuca.trainings.projects.advertisements.model.Advertisement;
 import com.emanuelciuca.trainings.projects.advertisements.repository.AdvertisementsRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -22,6 +23,8 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
 
     @Autowired
     private AdvertisementsRepository repository;
+    @Autowired
+    private AdvertisementMapper mapper;
 
     @Autowired
     private TestRestTemplate restTemplate;
@@ -34,14 +37,9 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
     @Test
     public void givenExistingId_whenGetAdvertisementById_thenReturnAdvertisement() {
         // GIVEN
-        Advertisement expectedAdvertisement = new Advertisement();
-        expectedAdvertisement.setTitle("title 123");
-        expectedAdvertisement = repository.saveAndFlush(expectedAdvertisement);
+        Advertisement expectedAdvertisement = createAdvertisement("title 123");
 
-        AdvertisementDto expectedResult = AdvertisementDto
-                .advertisementDto()
-                .withId(expectedAdvertisement.getId())
-                .withTitle(expectedAdvertisement.getTitle());
+        AdvertisementDto expectedResult = mapper.toDto(expectedAdvertisement);
 
         // WHEN
         String relativePath = API_ADVERTISEMENTS + "/" + expectedAdvertisement.getId();
@@ -80,9 +78,7 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
                 .postForEntity(API_ADVERTISEMENTS, details, AdvertisementDto.class);
 
         // THEN
-        AdvertisementDto newAdvertisementDto = AdvertisementDto.advertisementDto()
-                .withId(response.getBody().id)
-                .withTitle(response.getBody().title);
+        AdvertisementDto newAdvertisementDto = response.getBody();
 
         Optional<Advertisement> newAdvertisement = this.repository.findById(newAdvertisementDto.id);
 
@@ -93,13 +89,9 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
     @Test
     public void givenNewAdvertisementDetails_WhenPostRequestIsReceived_ThenUpdateAdvertisement() {
         // GIVEN
-        Advertisement existingAdvertisement = new Advertisement();
-        existingAdvertisement.setTitle("title 123");
-        existingAdvertisement = repository.save(existingAdvertisement);
+        Advertisement existingAdvertisement = createAdvertisement("title 123");
 
-        AdvertisementDto newAdvertisementDetails = AdvertisementDto.advertisementDto()
-                .withId(existingAdvertisement.getId())
-                .withTitle("title 124");
+        AdvertisementDto newAdvertisementDetails = mapper.toDto(existingAdvertisement).withTitle("title 124");
 
         // WHEN
         String relativePath = API_ADVERTISEMENTS + "/" + newAdvertisementDetails.id;
@@ -116,9 +108,7 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
     @Test
     public void givenExistingAdvertisement_WhenDeleteRequestIsReceived_ThenAdvertisementIsDeleted() {
         // GIVEN
-        Advertisement existingAdvertisement = new Advertisement();
-        existingAdvertisement.setTitle("title 123");
-        existingAdvertisement = repository.save(existingAdvertisement);
+        Advertisement existingAdvertisement = createAdvertisement("title 123");
 
         // WHEN
         String relativePath = API_ADVERTISEMENTS + "/" + existingAdvertisement.getId();
@@ -128,5 +118,12 @@ public class AdvertisementsControllerRestIntegrationTest extends RestIntegration
         Optional<Advertisement> updatedAdvertisement = this.repository.findById(existingAdvertisement.getId());
 
         Assertions.assertFalse(updatedAdvertisement.isPresent());
+    }
+
+    private Advertisement createAdvertisement(String title) {
+        Advertisement expectedAdvertisement = new Advertisement();
+        expectedAdvertisement.setTitle(title);
+
+        return repository.save(expectedAdvertisement);
     }
 }
