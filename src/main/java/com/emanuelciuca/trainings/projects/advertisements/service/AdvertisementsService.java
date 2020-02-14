@@ -28,11 +28,13 @@ public class AdvertisementsService {
     }
 
     public Advertisement updateAdvertisement(Long id, Advertisement advertisement) {
-        advertisementsRepository
+        Advertisement advertisementById = advertisementsRepository
                 .findById(id)
                 .orElseThrow(RuntimeException::new);
 
-        advertisement.setId(id);
+        advertisementById.setTitle(advertisement.getTitle());
+        advertisementById.setChannels(advertisement.getChannels());
+
         return advertisementsRepository.save(advertisement);
     }
 
